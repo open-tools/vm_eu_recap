@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension version="2.5" type="plugin" group="vmextended" method="upgrade">
+    <name>VMEXT_EU_RECAP</name>
+    <creationDate>2015-01-09</creationDate>
+    <author>Open Tools</author>
+    <authorEmail>office@open-tools.net</authorEmail>
+    <authorUrl>http://www.open-tools.net/</authorUrl>
+    <copyright>Copyright (C) 2015 Reinhold Kainhofer. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPLv3</license>
+    <version>0.1</version>
+    <releaseDate>2015-04-01</releaseDate>
+    <releaseType>Initial Release</releaseType>
+    <downloadUrl>http://www.open-tools.net</downloadUrl>
+
+    <description>VMEXT_EU_RECAP_DESC</description>
+
+    <files>
+        <filename plugin="eurecap">eurecap.php</filename>
+        <filename>eurecap.script.php</filename>
+        <filename>index.html</filename>
+        <folder>language</folder>
+        <folder>controllers</folder>
+        <folder>models</folder>
+        <folder>views</folder>
+    </files>
+    <scriptfile>eurecap.script.php</scriptfile>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.plg_vmextended_eurecap.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_vmextended_eurecap.sys.ini</language>
+    </languages>
+    
+    <vmconfig>
+        <fields name="settings" addfieldpath="/administrator/components/com_virtuemart/fields">
+            <fieldset name="order_properties" addfieldpath="/plugins/vmextended/eurecap/fields" label="VMEXT_EU_RECAP_ORDERPROPERTIES">
+                <field name="order_status" type="orderstatus" default="C,S" multiple="multiple" label="VMEXT_EU_RECAP_ORDERSTATUS" description="VMEXT_EU_RECAP_ORDERSTATUS_DESC "/>
+                <field name="shopper_groups" type="vmshoppergroups" multiple="multiple" label="VMEXT_EU_RECAP_SHOPPERGROUP" description="VMEXT_EU_RECAP_SHOPPERGROUP_DESC" />
+                <field name="vatid_userfield" type="vmuserfields" label="VMEXT_EU_RECAP_VATID_USERFIELD" multiple="multiple" default="opc_vat" description="VMEXT_EU_RECAP_VATID_USERFIELD_DESC" />
+                <field name="only_untaxed" type="radio" default="1" class="btn-group btn-group-yesno" label="VMEXT_EU_RECAP_UNTAXED" description="VMEXT_EU_RECAP_UNTAXED_DESC" >
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+            </fieldset>
+            <fieldset name="report_settings" addfieldpath="/plugins/vmextended/eurecap/fields" label="VMEXT_EU_RECAP_REPORTSETTINGS">
+                <field name="frequency" type="list" default="1" label="VMEXT_EU_RECAP_FREQUENCY" description="VMEXT_EU_RECAP_FREQUENCY_DESC" >
+                    <option value="1">VMEXT_EU_RECAP_FREQUENCY_MONTHLY</option>
+                    <option value="3">VMEXT_EU_RECAP_FREQUENCY_QUARTERLY</option>
+                    <option value="12">VMEXT_EU_RECAP_FREQUENCY_YEARLY</option>
+                </field>
+                <field name="countries" type="vmcountries" multiple="true" scope="com_virtuemart" default="" label="VMEXT_EU_RECAP_COUNTRIES" description="VMEXT_EU_RECAP_COUNTRIES_DESC"/>
+                <field name="taxation_moment" type="list" default="status" label="VMEXT_EU_RECAP_TAXATION_MOMENT" description="VMEXT_EU_RECAP_TAXATION_MOMENT_DESC" >
+                    <option value="placement">VMEXT_EU_RECAP_TAXATION_MOMENT_PLACEMENT</option>
+<!--                     <option value="status">VMEXT_EU_RECAP_TAXATION_MOMENT_STATUSCHANGE</option> -->
+<!--                     <option value="payment">VMEXT_EU_RECAP_TAXATION_MOMENT_PAYMENT</option> -->
+                    <option value="invoice">VMEXT_EU_RECAP_TAXATION_MOMENT_INVOICE</option>
+                </field>
+                <field name="taxnr" type="text" scope="com_virtuemart" default="" label="VMEXT_EU_RECAP_TAXNR" description="VMEXT_EU_RECAP_TAXNR_DESC"/>
+            </fieldset>
+        </fields>
+    </vmconfig>
+</extension>
