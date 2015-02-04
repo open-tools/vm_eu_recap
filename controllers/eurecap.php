@@ -38,6 +38,11 @@ class VirtuemartControllerEuRecap extends VmController {
 		$this->addViewPath(JPATH_PLUGINS.DS . 'vmextended' . DS . 'eurecap' . DS . 'views');
 	}
 
+	public function cancel(){
+		$msg = vmText::_('VMEXT_EU_RECAP_CANCELLED');
+		$this->setRedirect($this->redirectPath, $msg, 'message');
+	}
+
 	function settings($layout='settings'){
 
 		vRequest::setVar('controller', $this->_cname);
@@ -53,18 +58,17 @@ class VirtuemartControllerEuRecap extends VmController {
 		$this->display();
 	}
 
-	function export($layout='csv'){
+	function export(){
 
 		vRequest::setVar('controller', $this->_cname);
 		vRequest::setVar('view', $this->_cname);
-		vRequest::setVar('layout', $layout);
+// 		vRequest::setVar('layout', $layout);
 
-// 		$this->addViewPath(VMPATH_ADMIN . DS . 'views');
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView($this->_cname, $viewType);
 
-		$view->setLayout($layout);
+// 		$view->setLayout($layout);
 
 		$this->display();
 	}

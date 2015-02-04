@@ -9,7 +9,8 @@ MVCFILES=controllers/ models/ views/
 SYSTRANSLATIONS=$(call wildcard,language/*/*.plg_$(PLUGINTYPE)_$(BASE).*sys.ini)
 NONSYSTRANSLATIONS=${SYSTRANSLATIONS:%.sys.ini=%.ini}
 TRANSLATIONS=$(SYSTRANSLATIONS) $(NONSYSTRANSLATIONS) $(call wildcard,language/*/index.html) language/index.html
-FIELDS=$(call wildcard,fields/*.php) 
+FIELDS=fields/
+ELEMENTS=elements/
 ZIPFILE=plg_$(PLUGINTYPE)_$(BASE)_v$(VERSION).zip
 
 
@@ -20,7 +21,7 @@ $(NONSYSTRANSLATIONS): %.ini: %.sys.ini
 
 zip: $(PLUGINFILES) $(TRANSLATIONS) $(SYSTRANSLATIONS) $(NONSYSTRANSLATIONS)
 	@echo "Packing all files into distribution file $(ZIPFILE):"
-	@zip -r $(ZIPFILE) $(PLUGINFILES) $(MVCFILES) $(TRANSLATIONS) $(FIELDS)
+	@zip -r $(ZIPFILE) $(PLUGINFILES) $(MVCFILES) $(TRANSLATIONS) $(FIELDS) $(ELEMENTS)
 
 clean:
 	rm -f $(ZIPFILE)

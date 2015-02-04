@@ -22,6 +22,7 @@
         <folder>controllers</folder>
         <folder>models</folder>
         <folder>views</folder>
+		<folder>helpers</folder>
     </files>
     <scriptfile>eurecap.script.php</scriptfile>
     <languages folder="language">
@@ -29,13 +30,19 @@
         <language tag="en-GB">en-GB/en-GB.plg_vmextended_eurecap.sys.ini</language>
     </languages>
     
+<!-- 	VM 3.x: Fields -->
     <vmconfig>
         <fields name="settings" addfieldpath="/administrator/components/com_virtuemart/fields">
             <fieldset name="order_properties" addfieldpath="/plugins/vmextended/eurecap/fields" label="VMEXT_EU_RECAP_ORDERPROPERTIES">
+                <field name="countries" type="eucountries" multiple="true" scope="com_virtuemart" default="" label="VMEXT_EU_RECAP_COUNTRIES" description="VMEXT_EU_RECAP_COUNTRIES_DESC"/>
                 <field name="order_status" type="orderstatus" default="C,S" multiple="multiple" label="VMEXT_EU_RECAP_ORDERSTATUS" description="VMEXT_EU_RECAP_ORDERSTATUS_DESC "/>
                 <field name="shopper_groups" type="vmshoppergroups" multiple="multiple" label="VMEXT_EU_RECAP_SHOPPERGROUP" description="VMEXT_EU_RECAP_SHOPPERGROUP_DESC" />
                 <field name="vatid_userfield" type="vmuserfields" label="VMEXT_EU_RECAP_VATID_USERFIELD" multiple="multiple" default="opc_vat" description="VMEXT_EU_RECAP_VATID_USERFIELD_DESC" />
-                <field name="only_untaxed" type="radio" default="1" class="btn-group btn-group-yesno" label="VMEXT_EU_RECAP_UNTAXED" description="VMEXT_EU_RECAP_UNTAXED_DESC" >
+                <field name="include_taxed_orders" type="radio" default="0" class="btn-group btn-group-yesno" label="VMEXT_EU_RECAP_INCLUDE_TAXED" description="VMEXT_EU_RECAP_INCLUDE_TAXED_DESC" >
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+                <field name="include_free" type="radio" default="0" class="btn-group btn-group-yesno" label="VMEXT_EU_RECAP_INCLUDE_FREE" description="VMEXT_EU_RECAP_INCLUDE_FREE_DESC" >
                     <option value="1">JYES</option>
                     <option value="0">JNO</option>
                 </field>
@@ -46,15 +53,58 @@
                     <option value="3">VMEXT_EU_RECAP_FREQUENCY_QUARTERLY</option>
                     <option value="12">VMEXT_EU_RECAP_FREQUENCY_YEARLY</option>
                 </field>
-                <field name="countries" type="vmcountries" multiple="true" scope="com_virtuemart" default="" label="VMEXT_EU_RECAP_COUNTRIES" description="VMEXT_EU_RECAP_COUNTRIES_DESC"/>
-                <field name="taxation_moment" type="list" default="status" label="VMEXT_EU_RECAP_TAXATION_MOMENT" description="VMEXT_EU_RECAP_TAXATION_MOMENT_DESC" >
+                <field name="taxation_moment" type="list" default="placement" label="VMEXT_EU_RECAP_TAXATION_MOMENT" description="VMEXT_EU_RECAP_TAXATION_MOMENT_DESC" >
                     <option value="placement">VMEXT_EU_RECAP_TAXATION_MOMENT_PLACEMENT</option>
 <!--                     <option value="status">VMEXT_EU_RECAP_TAXATION_MOMENT_STATUSCHANGE</option> -->
 <!--                     <option value="payment">VMEXT_EU_RECAP_TAXATION_MOMENT_PAYMENT</option> -->
                     <option value="invoice">VMEXT_EU_RECAP_TAXATION_MOMENT_INVOICE</option>
                 </field>
+                <field name="export_format" type="list" default="full" label="VMEXT_EU_RECAP_EXPORT_FORMAT" description="VMEXT_EU_RECAP_EXPORT_FORMAT_DESC" >
+                    <option value="full">VMEXT_EU_RECAP_EXPORT_FULL</option>
+                    <option value="AT_xml">VMEXT_EU_RECAP_EXPORT_AT_XML</option>
+                    <option value="DE_csv">VMEXT_EU_RECAP_EXPORT_DE_CSV</option>
+                </field>
+                <field name="vendor_vatid" type="text" scope="com_virtuemart" default="" label="VMEXT_EU_RECAP_VENDOR_VATID" description="VMEXT_EU_RECAP_VENDOR_VATID_DESC"/>
                 <field name="taxnr" type="text" scope="com_virtuemart" default="" label="VMEXT_EU_RECAP_TAXNR" description="VMEXT_EU_RECAP_TAXNR_DESC"/>
             </fieldset>
         </fields>
     </vmconfig>
+
+
+   <!-- VM 2.0 support (params rather than fields): -->
+    <params addpath="/plugins/vmextended/eurecap/elements" />
+    <params addpath="/administrator/components/com_virtuemart/elements" >
+        <param type="vmjpluginwarning" />
+        <param name="order_status" type="vmorderstates" default="C,S" multiple="multiple" label="VMEXT_EU_RECAP_ORDERSTATUS" description="VMEXT_EU_RECAP_ORDERSTATUS_DESC "/>
+        <param name="shopper_groups" type="vmshoppergroups" multiple="multiple" label="VMEXT_EU_RECAP_SHOPPERGROUP" description="VMEXT_EU_RECAP_SHOPPERGROUP_DESC" />
+        <param name="vatid_userfield" type="vmuserfields" label="VMEXT_EU_RECAP_VATID_USERFIELD" multiple="multiple" default="opc_vat" description="VMEXT_EU_RECAP_VATID_USERFIELD_DESC" />
+        <param name="include_taxed_orders" type="radio" default="0" class="btn-group btn-group-yesno" label="VMEXT_EU_RECAP_INCLUDE_TAXED" description="VMEXT_EU_RECAP_INCLUDE_TAXED_DESC" >
+            <option value="1">JYES</option>
+            <option value="0">JNO</option>
+        </param>
+        <param name="include_free" type="radio" default="0" class="btn-group btn-group-yesno" label="VMEXT_EU_RECAP_INCLUDE_FREE" description="VMEXT_EU_RECAP_INCLUDE_FREE_DESC" >
+            <option value="1">JYES</option>
+            <option value="0">JNO</option>
+        </param>
+        <param name="frequency" type="list" default="1" label="VMEXT_EU_RECAP_FREQUENCY" description="VMEXT_EU_RECAP_FREQUENCY_DESC" >
+            <option value="1">VMEXT_EU_RECAP_FREQUENCY_MONTHLY</option>
+            <option value="3">VMEXT_EU_RECAP_FREQUENCY_QUARTERLY</option>
+            <option value="12">VMEXT_EU_RECAP_FREQUENCY_YEARLY</option>
+        </param>
+        <param name="countries" type="eucountries" multiple="true" scope="com_virtuemart" default="" label="VMEXT_EU_RECAP_COUNTRIES" description="VMEXT_EU_RECAP_COUNTRIES_DESC"/>
+        <param name="taxation_moment" type="list" default="placement" label="VMEXT_EU_RECAP_TAXATION_MOMENT" description="VMEXT_EU_RECAP_TAXATION_MOMENT_DESC" >
+            <option value="placement">VMEXT_EU_RECAP_TAXATION_MOMENT_PLACEMENT</option>
+<!--             <option value="status">VMEXT_EU_RECAP_TAXATION_MOMENT_STATUSCHANGE</option> -->
+<!--             <option value="payment">VMEXT_EU_RECAP_TAXATION_MOMENT_PAYMENT</option> -->
+            <option value="invoice">VMEXT_EU_RECAP_TAXATION_MOMENT_INVOICE</option>
+        </param>
+        <param name="export_format" type="list" default="full" label="VMEXT_EU_RECAP_EXPORT_FORMAT" description="VMEXT_EU_RECAP_EXPORT_FORMAT_DESC" >
+            <option value="full">VMEXT_EU_RECAP_EXPORT_FULL</option>
+            <option value="AT_xml">VMEXT_EU_RECAP_EXPORT_AT_XML</option>
+            <option value="DE_csv">VMEXT_EU_RECAP_EXPORT_DE_CSV</option>
+        </param>
+        <param name="vendor_vatid" type="text" scope="com_virtuemart" default="" label="VMEXT_EU_RECAP_VENDOR_VATID" description="VMEXT_EU_RECAP_VENDOR_VATID_DESC"/>
+        <param name="taxnr" type="text" scope="com_virtuemart" default="" label="VMEXT_EU_RECAP_TAXNR" description="VMEXT_EU_RECAP_TAXNR_DESC"/>
+    </params>
+
 </extension>

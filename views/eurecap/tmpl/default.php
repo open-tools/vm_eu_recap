@@ -20,6 +20,11 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 AdminUIHelper::startAdminArea($this);
 
 JHtml::_('behavior.framework', true);
+if (!class_exists('CurrencyDisplay'))
+    require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
+$myCurrencyDisplay = CurrencyDisplay::getInstance();
+
+
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
     <div id="header">
@@ -29,9 +34,9 @@ JHtml::_('behavior.framework', true);
                 <tr>
                     <td align="left" width="100%">
 						<?php if ($this->frequency<12) {
-							echo vmText::_('VMEXT_EU_RECAP_LIST_MONTH') . $this->lists['month_list']; 
+							echo vmText::_('VMEXT_EU_RECAP_LIST_MONTH') . $this->period_lists['month_list']; 
 						} ?>
-                        <?php echo vmText::_('VMEXT_EU_RECAP_LIST_YEAR') . $this->lists['year_list'];
+                        <?php echo vmText::_('VMEXT_EU_RECAP_LIST_YEAR') . $this->period_lists['year_list'];
 
                         if(VmConfig::get('multix','none')!='none'){
                             $vendorId = vRequest::getInt('virtuemart_vendor_id',1);
@@ -44,7 +49,7 @@ JHtml::_('behavior.framework', true);
             </table>
         </div>
         <div id="resultscounter">
-            <?php echo $this->pagination->getResultsCounter();?>
+            <?php if ($this->pagination) echo $this->pagination->getResultsCounter();?>
         </div>
     </div>
 
@@ -85,7 +90,13 @@ JHtml::_('behavior.framework', true);
                     <td align="center">
                         <?php echo $r['vatid']; ?>
                     </td>
-                    <td align="center">
+                    <?php 
+                        $vatidcc = substr(trim($r['vatid']), 0, 2);
+                        if ($vatidcc=="EL") $vatidcc="GR";
+                        if ($vatidcc=="UK") $vatidcc="GB";
+                        $countrymatch = ($vatidcc == $r['countrycode']);
+                    ?>
+                    <td align="center" <?php if (!$countrymatch) { echo "style=\"background: #FFBFBF;\""; }; ?>>
                         <?php echo $r['countrycode'];?>
                     </td>
                     <td align="left">
@@ -117,10 +128,10 @@ JHtml::_('behavior.framework', true);
                     ?>
                     </td>
                     <td align="right">
-		                <?php echo $r['sum_order_total'];?>
+		                <?php echo $myCurrencyDisplay->priceDisplay($r['sum_order_total']); ?>
                     </td>
                     <td align="right">
-		                <?php echo $r['sum_order_tax'];?>
+		                <?php echo $myCurrencyDisplay->priceDisplay($r['sum_order_tax']); ?>
                     </td>
                 </tr>
                 <?php
@@ -131,7 +142,7 @@ JHtml::_('behavior.framework', true);
             <tfoot>
                 <tr>
                     <td colspan="10">
-                        <?php echo $this->pagination->getListFooter(); ?>
+                        <?php if ($this->pagination) echo $this->pagination->getListFooter(); ?>
                     </td>
                 </tr>
             </tfoot>

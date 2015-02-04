@@ -14,12 +14,13 @@ defined('_JEXEC') or die();
  * other free or open source software licenses.
  */
  
-defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+if (!class_exists('JElementList')) require_once(JPATH_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter'.DS.'element'.DS.'list.php');
 
-class JFormFieldVmUserFields extends JFormFieldList {
+class JELementVmUserFields extends JElementList {
+
     var $_name = 'vmUserFields';
 
-    protected function getOptions() {
+    protected function _getOptions(&$node) {
         $model = VmModel::getModel('userfields');
         $userfields = $model->getUserfieldsList();
         $options = array();

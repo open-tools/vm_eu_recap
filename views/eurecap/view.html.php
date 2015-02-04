@@ -48,8 +48,6 @@ class VirtuemartViewEuRecap extends VmViewAdmin {
 
 		if (!class_exists('VmHTML'))
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
-		if (!class_exists('CurrencyDisplay'))
-			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 
 		$model		= VmModel::getModel();
 		$this->addStandardDefaultViewLists($model);
@@ -57,16 +55,21 @@ class VirtuemartViewEuRecap extends VmViewAdmin {
 		vRequest::setvar('task','');
 		$this->SetViewTitle('EU_RECAP');
 
-		$myCurrencyDisplay = CurrencyDisplay::getInstance();
-
 		$layoutName = vRequest::getCmd('layout', 'default');
 		if ($layoutName == 'settings') {
 			JToolBarHelper::divider();
 			JToolBarHelper::save();	
 			JToolBarHelper::apply();
 			JToolBarHelper::cancel();
-			$form = $this->renderPluginSettings();
-			$this->assignRef('config_form', $form);
+			if(!defined('VM_VERSION') or VM_VERSION < 3){
+				// VM 2.x uses vmParameters
+				$form = $this->renderPluginSettingsVM2();
+				$this->assignRef('config_params', $form);
+			} else {
+				// VM 3.x uses JForm
+				$form = $this->renderPluginSettingsVM3();
+				$this->assignRef('config_form', $form);
+			}
 			// TODO
 		} else {
 			$this->setupListView($model);
@@ -75,50 +78,81 @@ class VirtuemartViewEuRecap extends VmViewAdmin {
 		parent::display($tpl);
 	}
 
-	function setupListView ($model) {
-		JToolBarHelper::custom('settings', 'options', 'options','VMEXT_EU_RECAP_SETTINGS', false);
-		JToolBarHelper::custom('check_eu_vatid', 'recheck', 'recheck', 'VMEXT_EU_RECAP_RECHECK_EUVATID', true);
-		JToolBarHelper::custom('export', 'export', 'export', 'VMEXT_EU_RECAP_EXPORT', false);
+	/**
+	 * Copied from VmView(Admin). Only change is the inserted $name in JText::_('COM_VIRTUEMART_'. $name . '_' . $task)
+	 */
+	function SetViewTitle($name ='', $msg ='',$icon ='') {
 
+		$view = JRequest::getWord('view', JRequest::getWord('controller'));
+		if ($name == '')
+			$name = strtoupper($view);
+		if ($icon == '')
+			$icon = strtolower($view);
+		if (!$task = JRequest::getWord('task'))
+			$task = 'list';
+
+		if (!empty($msg)) {
+			$msg = ' <span style="color: #666666; font-size: large;">' . $msg . '</span>';
+		}
+
+		$viewText = JText::_('COM_VIRTUEMART_' . strtoupper($name));
+
+		$taskName = ' <small><small>[ ' . JText::_('COM_VIRTUEMART_'. $name . '_' . $task) . ' ]</small></small>';
+
+		JToolBarHelper::title($viewText . ' ' . $taskName . $msg, 'head vm_' . $icon . '_48');
+		$this->assignRef('viewName',$viewText); //was $viewName?
+		$app = JFactory::getApplication();
+		$doc = JFactory::getDocument();
+		$doc->setTitle($app->getCfg('sitename'). ' - ' .JText::_('JADMINISTRATION').' - '.strip_tags($msg));
+	}
+
+	function setupListView ($model) {
 		$month = vRequest::getVar('month', '1');
 		$year = vRequest::getVar('year', date("Y"));
-
+		
 		$settingsModel = VmModel::getModel("eurecap_config");
 		$settings = $settingsModel->getConfig();
+
+		$bar = JToolbar::getInstance('toolbar');
+		JToolBarHelper::custom('settings', 'options', 'options','VMEXT_EU_RECAP_SETTINGS', false);
+// 		JToolBarHelper::custom('check_eu_vatid', 'recheck', 'recheck', 'VMEXT_EU_RECAP_RECHECK_EUVATID', true);
+// 		$bar->appendButton('Link', 'export', 'VMEXT_EU_RECAP_FULLEXPORT', 'index.php?option=com_virtuemart&view=eurecap&task=export&format=raw&layout=export_full&month='.$month.'&year='.$year);
+		$bar->appendButton('Link', 'export', 'VMEXT_EU_RECAP_EXPORT_TB_' . $settings['export_format'], 'index.php?option=com_virtuemart&view=eurecap&task=export&format=raw&layout=export&month='.$month.'&year='.$year);
+
+
 		$this->frequency = $settings['frequency'];
-		$this->lists['month_list'] = $model->renderMonthSelectList($this->frequency, $month);
-		$this->lists['year_list'] = $model->renderYearSelectList($year);
+		$period_list = array();
+		$period_list['month_list'] = $model->renderMonthSelectList($this->frequency, $month);
+		$period_list['year_list'] = $model->renderYearSelectList($year);
+		$this->assignRef('period_lists', $period_list);
 
 		$this->assignRef('from_period', $model->from_date);
 		$this->assignRef('until_period', $model->until_date);
 
-		$myCurrencyDisplay = CurrencyDisplay::getInstance();
-		
+		$this->assignRef('from', $model->from);
+		$this->assignRef('until', $model->until);
+
 		$this->addStandardDefaultViewLists($model);
 		$euIntracommunityRevenue = $model->getEuRecap();
-		foreach ($euIntracommunityRevenue as &$r) {
-			$r['sum_order_total'] = $myCurrencyDisplay->priceDisplay($r['sum_order_total']);
-			$r['sum_order_tax'] = $myCurrencyDisplay->priceDisplay($r['sum_order_tax']);
-		}
 		$this->assignRef('report', $euIntracommunityRevenue);
+		
+		$this->assignRef('export_format', $settings['export_format']);
 
 		$pagination = $model->getPagination();
 		$this->assignRef('pagination', $pagination);
-	
+
 	}
 
-	function renderPluginSettings(){
+	function renderPluginSettingsVM3(){
 
 		if (!class_exists('vmExtendedPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmextendedplugin.php');
 
 		JForm::addFieldPath(VMPATH_ADMIN . DS . 'fields');
 
 		$path = VMPATH_ROOT .DS. 'plugins' .DS. 'vmextended' . DS . $this->getName() . DS . $this->getName() . '.xml';
-		// Get the payment XML.
-		$formFile	= vRequest::filterPath( $path );
-		if (file_exists($formFile)){
+		if (file_exists($path)){
 
-			$form = vmPlugin::loadConfigForm($formFile, $this->getName());
+			$form = vmPlugin::loadConfigForm($path, $this->getName());
 
 			// load config
 			$eurecapSettingsModel = VmModel::getModel("eurecap_config");
@@ -126,14 +160,22 @@ class VirtuemartViewEuRecap extends VmViewAdmin {
 			$form->bind(array('settings'=>$settings));
 		} else {
 			$form = false;
-			vmdebug('renderUserfieldPlugin could not find xml for ' . $this->getName() . ' at ' . $path);
+			vmdebug('renderPluginSettingsVM3: Unable to find xml for ' . $this->getName() . ' at ' . $path);
 		}
-		//vmdebug('renderUserfieldPlugin ',$this->userField->form);
 		return $form;
 	}
 
+	function renderPluginSettingsVM2(){
+		if (!class_exists('vmParameters'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
 
+		// load config
+		$eurecapSettingsModel = VmModel::getModel("eurecap_config");
+		$settings = $eurecapSettingsModel->getConfig();
 
+		$parameters = new vmParameters($settings, 'eurecap', 'plugin', 'vmextended');
+		return $parameters;
+	}
 
 
 }

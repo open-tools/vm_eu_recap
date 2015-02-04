@@ -38,13 +38,12 @@ class plgVmExtendedEuRecapInstallerScript
      * @return  boolean  True on success
      */
     public function postflight ($type, $parent = null) {
-//         if(!class_exists( 'vmPlugin' )) 
-//             require JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'vmplugin.php';
-//         if(!class_exists( 'plgVmShopperOrdernumber' )) 
-//             require JPATH_ROOT.DS.'plugins'.DS.'vmextended'.DS.'eurecap'.DS.'eurecap.php';
-//         $dispatcher = new JDispatcher();
-//         $config = array('name' => 'eurecap', 'type' => 'vmextended');
-//         $plugin = new plgVmExtendedEuRecap($dispatcher, $config);
+        if(!class_exists( 'plgVmExtendedEuRecap' )) 
+            require JPATH_ROOT.DS.'plugins'.DS.'vmextended'.DS.'eurecap'.DS.'eurecap.php';
+        $dispatcher = new JDispatcher();
+        $config = array('name' => 'eurecap', 'type' => 'vmextended');
+        $plugin = new plgVmExtendedEuRecap($dispatcher, $config);
+        $plugin->onInstallCheckAdminMenuEntries();
 //         $plugin->plgVmOnStoreInstallPluginTable('extended');
 // //         $dispatcher->trigger("plgVmOnStoreInstallPluginTable", array('vmshopper'));
     }
