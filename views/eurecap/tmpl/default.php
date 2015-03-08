@@ -26,7 +26,7 @@ $myCurrencyDisplay = CurrencyDisplay::getInstance();
 
 
 ?>
-<pre><?php print_r(vRequest::getRequest()); ?></pre>
+
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<?php echo $this->addStandardHiddenToForm(); ?>
 
@@ -37,6 +37,7 @@ $myCurrencyDisplay = CurrencyDisplay::getInstance();
             <table width="100%">
                 <tr width="100%">
                     <td align="left">
+						<div style="float: left">
 						<?php 
 						echo vmText::_('VMEXT_EU_RECAP_LIST_PERIOD');
 						if ($this->frequency<12) {
@@ -48,17 +49,14 @@ $myCurrencyDisplay = CurrencyDisplay::getInstance();
                             $vendorId = vRequest::getInt('virtuemart_vendor_id',1);
                             echo ShopFunctions::renderVendorList($vendorId,false);
                         } ?><br>
-                        <label><input type="checkbox" <?php if ($this->include_taxed_orders) { ?>checked <?php } ?> name="include_taxed_orders" value="true" style="    vertical-align: middle; position: relative; bottom: 1px;">&nbsp;&nbsp;&nbsp;<?php echo vmText::_('VMEXT_EU_RECAP_INCLUDE_TAXED'); ?></label>
-                        
-					</td>
-					<td align="left" width="5%">
-                        <button class="btn btn-small" name="Go" onclick="this.form.task.value=''; this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?></button>
+                        <label><input type="checkbox" <?php if ($this->include_taxed_orders) { ?>checked <?php } ?> name="include_taxed_orders" value="true" style="vertical-align: top; position: relative; bottom: 1px;">&nbsp;<?php echo vmText::_('VMEXT_EU_RECAP_INCLUDE_TAXED'); ?></label>
+                        </div>
+                        <span><button class="btn btn-small" name="Go" onclick="this.form.task.value=''; this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?></button></span>
                     </td>
-                    <td width="30%"></td>
-					<td align="right" width>
-						<?php echo $this->export_format_list; ?>
-                        <button class="btn btn-small" name="format" value="raw" onclick="this.form.task.value='export'; this.form.submit();"><?php echo vmText::_('VMEXT_EU_RECAP_EXPORT'); ?>
-                        </button>
+                    <td align="right" style="vertical-align: top">
+						<div style="float: right"><?php echo $this->export_format_list; ?>
+                        <button class="btn btn-small" name="format" value="raw" onclick="this.form.task.value='export'; this.form.submit();" style="vertical-align: top;"><?php echo vmText::_('VMEXT_EU_RECAP_EXPORT'); ?>
+                        </button></div>
                     </td>
                 </tr>
             </table>

@@ -67,25 +67,9 @@ class VirtuemartControllerEuRecap extends VmController {
 		vRequest::setVar('task', $layout);
 // 		vRequest::setVar('format', 'raw');
 
-// $japp = &JApplication::getInstance("site"); // fetches the current application
-// $japp->setTemplate("", null); // sets an empty template, disables the default one
-// $document = &JFactory::getDocument(); // gets the document, that the user wants
-// $document->setType("raw"); // sets its type to raw
-// JRequest::setVar("format", "raw"); // this one is not obligatory, but my component uses this in the view later
-		
-// 		$document = JDocument::getInstance('raw');  //this new instance is a raw document object
-// 		$viewType = $document->getType();
-// 		// $viewname below is set in jinput or as you named it
-// 		$view = $this->getView($viewName, $viewType);
-// // 		$this->input->set('view', $viewName);
-// 		$this->input->set('view', $viewName);
-
 		$document = JFactory::getDocument();
-// 		$document->setType('raw');
 		$viewType = $document->getType();
 		$view = $this->getView($viewName, $viewType);
-
-JFactory::getApplication()->enqueueMessage("Export function in controller", 'warning');
 		$view->setLayout($layout);
 
 		$this->display();

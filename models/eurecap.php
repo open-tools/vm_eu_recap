@@ -235,7 +235,7 @@ class VirtuemartModelEuRecap extends VmModel {
 		foreach ($vals as $month=>$label) {
 			$options[] = JHtml::_ ('select.option', $label, $month);
 		}
-		$listHTML = JHtml::_ ('select.genericlist', $options, 'month', 'size="7" class="inputbox" onchange="this.form.submit();" ', 'text', 'value', $selected);
+		$listHTML = JHtml::_ ('select.genericlist', $options, 'month', 'class="inputbox" style="width: inherit" onchange="this.form.submit();" ', 'text', 'value', $selected);
 
 		return $listHTML;
 	}
@@ -245,7 +245,7 @@ class VirtuemartModelEuRecap extends VmModel {
 		foreach (range(2010, 2020) as $year) {
 			$options[] = JHtml::_ ('select.option', $year, $year);
 		}
-		$listHTML = JHtml::_ ('select.genericlist', $options, 'year', 'size="7" class="inputbox" onchange="this.form.submit();" ', 'text', 'value', $selected);
+		$listHTML = JHtml::_ ('select.genericlist', $options, 'year', 'class="inputbox" style="width: inherit" onchange="this.form.submit();" ', 'text', 'value', $selected);
 		return $listHTML;
 	}
 	
@@ -263,7 +263,7 @@ class VirtuemartModelEuRecap extends VmModel {
 			$value = substr($tmpl, 7, -4); // Cut off export_ and .php
 			$options[] = JHtml::_('select.option', vmText::_('VMEXT_EU_RECAP_EXPORT_' . strtoupper($value)), $value);
         }
-        $listHTML = JHtml::_ ('select.genericlist', $options, 'export_format', 'size="7" class="inputbox" ', 'text', 'value', $selected);
+        $listHTML = JHtml::_ ('select.genericlist', $options, 'export_format', 'size="7" class="inputbox"', 'text', 'value', $selected);
         return $listHTML;
 	}
 
