@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Installation script for the plugin
  *
- * @copyright Copyright (C) 2013-2014 Reinhold Kainhofer, office@open-tools.net
+ * @copyright Copyright (C) 2015 Reinhold Kainhofer, office@open-tools.net
  * @license GPL v3+,  http://www.gnu.org/copyleft/gpl.html
  */
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
@@ -89,6 +89,10 @@ class plgVmExtendedEuRecapInstallerScript
      */
     public function uninstall(JAdapterInstance $adapter)
     {
+		$db = JFactory::getDBO();
+		$q = "DELETE FROM `#__virtuemart_adminmenuentries` WHERE `view` = 'eurecap' AND `task` = '' AND `module_id` = 2";
+		$db->setQuery($q);
+		$db->query();
 //         // Remove plugin table
 //         $db =& JFactory::getDBO();
 //         $db->setQuery('DROP TABLE IF EXISTS `#__virtuemart_shopper_plg_ordernumber`;');

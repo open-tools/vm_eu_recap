@@ -22,6 +22,7 @@ if(!defined('VM_VERSION') or VM_VERSION < 3){
 	// VM2 has class VmView instead of VmViewAdmin:
 	if(!class_exists('VmView'))      require(VMPATH_ADMIN.DS.'helpers'.DS.'vmview.php');
 	class VmViewAdmin extends VmView {}
+	defined ('VMPATH_PLUGINLIBS') or define ('VMPATH_PLUGINLIBS', JPATH_VM_PLUGINS);
 } else {
 	if(!class_exists('VmViewAdmin')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmviewadmin.php');
 }
@@ -119,6 +120,16 @@ class VirtuemartViewEuRecap extends VmViewAdmin {
 // 		$bar->appendButton('Link', 'export', 'VMEXT_EU_RECAP_FULLEXPORT', 'index.php?option=com_virtuemart&view=eurecap&task=export&format=raw&layout=export_full&month='.$month.'&year='.$year);
 		$bar->appendButton('Link', 'export', 'VMEXT_EU_RECAP_EXPORT_TB_' . $settings['export_format'], 'index.php?option=com_virtuemart&view=eurecap&task=export&format=raw&layout=export&month='.$month.'&year='.$year);
 
+		$user = JFactory::getUser();
+		if($user->authorise('core.admin', 'com_virtuemart') or $user->authorise('core.manager', 'com_virtuemart')){
+			$vendorId = vRequest::getInt('virtuemart_vendor_id');
+		} else {
+			$vendorId = VmConfig::isSuperVendor();
+		}
+		$vendorModel = VmModel::getModel('vendor');
+		$vendor = $vendorModel->getVendor($vendorId);
+		$vendor->vendorFields = $vendorModel->getVendorAddressFields($vendorId);
+		$this->assignRef('vendor', $vendor);
 
 		$this->frequency = $settings['frequency'];
 		$period_list = array();
@@ -131,12 +142,15 @@ class VirtuemartViewEuRecap extends VmViewAdmin {
 
 		$this->assignRef('from', $model->from);
 		$this->assignRef('until', $model->until);
-
+		
+		$this->include_taxed_orders = vRequest::getVar('include_taxed_orders', 0);
+		
 		$this->addStandardDefaultViewLists($model);
 		$euIntracommunityRevenue = $model->getEuRecap();
 		$this->assignRef('report', $euIntracommunityRevenue);
-		
-		$this->assignRef('export_format', $settings['export_format']);
+
+		$this->export_format_list = $model->renderExportFormatList($this->_path['template'], $settings['export_format']);
+// 		$this->assignRef('export_format', $settings['export_format']);
 
 		$pagination = $model->getPagination();
 		$this->assignRef('pagination', $pagination);
@@ -152,7 +166,8 @@ class VirtuemartViewEuRecap extends VmViewAdmin {
 		$path = VMPATH_ROOT .DS. 'plugins' .DS. 'vmextended' . DS . $this->getName() . DS . $this->getName() . '.xml';
 		if (file_exists($path)){
 
-			$form = vmPlugin::loadConfigForm($path, $this->getName());
+// 			$form = vmPlugin::loadConfigForm($path, $this->getName());
+			$form = JForm::getInstance($this->getName().'-vmconfig', $path, array(), false, '//vmconfig | //config[not(//vmconfig)]');
 
 			// load config
 			$eurecapSettingsModel = VmModel::getModel("eurecap_config");

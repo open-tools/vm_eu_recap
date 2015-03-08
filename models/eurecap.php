@@ -135,7 +135,8 @@ class VirtuemartModelEuRecap extends VmModel {
 		if ($settings['include_free']==0) {
 			$where[] = "`o`.`order_total` > 0";
 		}
-		if ($settings['include_taxed_orders']==0) {
+		$include_taxed_orders = vRequest::getVar('include_taxed_orders', 0);
+		if (!$include_taxed_orders) {
 			$where[] = "`o`.`order_tax` = 0";
 		}
 		$where[] = '`ui`.`address_type` = "BT"';
@@ -247,5 +248,24 @@ class VirtuemartModelEuRecap extends VmModel {
 		$listHTML = JHtml::_ ('select.genericlist', $options, 'year', 'size="7" class="inputbox" onchange="this.form.submit();" ', 'text', 'value', $selected);
 		return $listHTML;
 	}
+	
+	public function renderExportFormatList($pathes=array(), $selected='full') {
+        jimport('joomla.filesystem.folder');
+        $templates = array();
+        foreach ($pathes as $tmplpath) {
+			if (!JFolder::exists($tmplpath)) continue;
+			$templates = array_merge($templates, JFolder::files($tmplpath, 'export_.*\.php'));
+        }
+        sort($templates, SORT_STRING);
+        $templates = array_unique($templates);
+        
+        foreach ($templates as $tmpl) {
+			$value = substr($tmpl, 7, -4); // Cut off export_ and .php
+			$options[] = JHtml::_('select.option', vmText::_('VMEXT_EU_RECAP_EXPORT_' . strtoupper($value)), $value);
+        }
+        $listHTML = JHtml::_ ('select.genericlist', $options, 'export_format', 'size="7" class="inputbox" ', 'text', 'value', $selected);
+        return $listHTML;
+	}
+
 
 }

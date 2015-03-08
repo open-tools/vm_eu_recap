@@ -17,7 +17,8 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * http://www.open-tools.net
 */
 
-if(!class_exists('VmController'))require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcontroller.php');
+defined ('VMPATH_ADMIN') or define ('VMPATH_ADMIN', JPATH_VM_ADMINISTRATOR);
+if(!class_exists('VmController')) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcontroller.php');
 
 
 /**
@@ -58,17 +59,34 @@ class VirtuemartControllerEuRecap extends VmController {
 		$this->display();
 	}
 
-	function export(){
+	function export($layout='export'){
+		$viewName = $this->_cname;
+		vRequest::setVar('controller', $viewName);
+		vRequest::setVar('view', $viewName);
+		vRequest::setVar('layout', $layout);
+		vRequest::setVar('task', $layout);
+// 		vRequest::setVar('format', 'raw');
 
-		vRequest::setVar('controller', $this->_cname);
-		vRequest::setVar('view', $this->_cname);
-// 		vRequest::setVar('layout', $layout);
+// $japp = &JApplication::getInstance("site"); // fetches the current application
+// $japp->setTemplate("", null); // sets an empty template, disables the default one
+// $document = &JFactory::getDocument(); // gets the document, that the user wants
+// $document->setType("raw"); // sets its type to raw
+// JRequest::setVar("format", "raw"); // this one is not obligatory, but my component uses this in the view later
+		
+// 		$document = JDocument::getInstance('raw');  //this new instance is a raw document object
+// 		$viewType = $document->getType();
+// 		// $viewname below is set in jinput or as you named it
+// 		$view = $this->getView($viewName, $viewType);
+// // 		$this->input->set('view', $viewName);
+// 		$this->input->set('view', $viewName);
 
 		$document = JFactory::getDocument();
+// 		$document->setType('raw');
 		$viewType = $document->getType();
-		$view = $this->getView($this->_cname, $viewType);
+		$view = $this->getView($viewName, $viewType);
 
-// 		$view->setLayout($layout);
+JFactory::getApplication()->enqueueMessage("Export function in controller", 'warning');
+		$view->setLayout($layout);
 
 		$this->display();
 	}

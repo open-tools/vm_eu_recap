@@ -63,6 +63,22 @@ class VirtuemartViewEuRecap extends VmViewAdmin {
 		
 		$this->assignRef('settings', $settings);
 
+		$user = JFactory::getUser();
+		if($user->authorise('core.admin', 'com_virtuemart') or $user->authorise('core.manager', 'com_virtuemart')){
+			$vendorId = vRequest::getInt('virtuemart_vendor_id');
+		} else {
+			$vendorId = VmConfig::isSuperVendor();
+		}
+		$vendorModel = VmModel::getModel('vendor');
+		$vendor = $vendorModel->getVendor($vendorId);
+		$vendor->vendorFields = $vendorModel->getVendorAddressFields($vendorId);
+		$this->assignRef('vendor', $vendor);
+
+		$oldformat = isset($settings['export_format'])?$settings['export_format']:'full';
+		$settings['export_format'] = vRequest::getVar('export_format', $oldformat);
+		if ($oldformat != $settings['export_format'])
+			$settingsModel->saveConfig(array('settings'=>$settings));
+		
 		$this->assignRef('export_format', $settings['export_format']);
 		parent::display($tpl);
 	}

@@ -22,7 +22,8 @@
         <folder>controllers</folder>
         <folder>models</folder>
         <folder>views</folder>
-		<folder>helpers</folder>
+        <folder>fields</folder>
+        <folder>elements</folder>
     </files>
     <scriptfile>eurecap.script.php</scriptfile>
     <languages folder="language">
@@ -38,10 +39,10 @@
                 <field name="order_status" type="orderstatus" default="C,S" multiple="multiple" label="VMEXT_EU_RECAP_ORDERSTATUS" description="VMEXT_EU_RECAP_ORDERSTATUS_DESC "/>
                 <field name="shopper_groups" type="vmshoppergroups" multiple="multiple" label="VMEXT_EU_RECAP_SHOPPERGROUP" description="VMEXT_EU_RECAP_SHOPPERGROUP_DESC" />
                 <field name="vatid_userfield" type="vmuserfields" label="VMEXT_EU_RECAP_VATID_USERFIELD" multiple="multiple" default="opc_vat" description="VMEXT_EU_RECAP_VATID_USERFIELD_DESC" />
-                <field name="include_taxed_orders" type="radio" default="0" class="btn-group btn-group-yesno" label="VMEXT_EU_RECAP_INCLUDE_TAXED" description="VMEXT_EU_RECAP_INCLUDE_TAXED_DESC" >
+<!--                <field name="include_taxed_orders" type="radio" default="0" class="btn-group btn-group-yesno" label="VMEXT_EU_RECAP_INCLUDE_TAXED" description="VMEXT_EU_RECAP_INCLUDE_TAXED_DESC" >
                     <option value="1">JYES</option>
                     <option value="0">JNO</option>
-                </field>
+                </field>-->
                 <field name="include_free" type="radio" default="0" class="btn-group btn-group-yesno" label="VMEXT_EU_RECAP_INCLUDE_FREE" description="VMEXT_EU_RECAP_INCLUDE_FREE_DESC" >
                     <option value="1">JYES</option>
                     <option value="0">JNO</option>
@@ -59,11 +60,12 @@
 <!--                     <option value="payment">VMEXT_EU_RECAP_TAXATION_MOMENT_PAYMENT</option> -->
                     <option value="invoice">VMEXT_EU_RECAP_TAXATION_MOMENT_INVOICE</option>
                 </field>
-                <field name="export_format" type="list" default="full" label="VMEXT_EU_RECAP_EXPORT_FORMAT" description="VMEXT_EU_RECAP_EXPORT_FORMAT_DESC" >
+<!--                <field name="export_format" type="list" default="full" label="VMEXT_EU_RECAP_EXPORT_FORMAT" description="VMEXT_EU_RECAP_EXPORT_FORMAT_DESC" >
                     <option value="full">VMEXT_EU_RECAP_EXPORT_FULL</option>
                     <option value="AT_xml">VMEXT_EU_RECAP_EXPORT_AT_XML</option>
                     <option value="DE_csv">VMEXT_EU_RECAP_EXPORT_DE_CSV</option>
-                </field>
+                    <option value="SK_xml">VMEXT_EU_RECAP_EXPORT_SK_XML</option>
+                </field>-->
                 <field name="vendor_vatid" type="text" scope="com_virtuemart" default="" label="VMEXT_EU_RECAP_VENDOR_VATID" description="VMEXT_EU_RECAP_VENDOR_VATID_DESC"/>
                 <field name="taxnr" type="text" scope="com_virtuemart" default="" label="VMEXT_EU_RECAP_TAXNR" description="VMEXT_EU_RECAP_TAXNR_DESC"/>
             </fieldset>
@@ -78,10 +80,10 @@
         <param name="order_status" type="vmorderstates" default="C,S" multiple="multiple" label="VMEXT_EU_RECAP_ORDERSTATUS" description="VMEXT_EU_RECAP_ORDERSTATUS_DESC "/>
         <param name="shopper_groups" type="vmshoppergroups" multiple="multiple" label="VMEXT_EU_RECAP_SHOPPERGROUP" description="VMEXT_EU_RECAP_SHOPPERGROUP_DESC" />
         <param name="vatid_userfield" type="vmuserfields" label="VMEXT_EU_RECAP_VATID_USERFIELD" multiple="multiple" default="opc_vat" description="VMEXT_EU_RECAP_VATID_USERFIELD_DESC" />
-        <param name="include_taxed_orders" type="radio" default="0" class="btn-group btn-group-yesno" label="VMEXT_EU_RECAP_INCLUDE_TAXED" description="VMEXT_EU_RECAP_INCLUDE_TAXED_DESC" >
+<!--         <param name="include_taxed_orders" type="radio" default="0" class="btn-group btn-group-yesno" label="VMEXT_EU_RECAP_INCLUDE_TAXED" description="VMEXT_EU_RECAP_INCLUDE_TAXED_DESC" > 
             <option value="1">JYES</option>
             <option value="0">JNO</option>
-        </param>
+		</param>-->
         <param name="include_free" type="radio" default="0" class="btn-group btn-group-yesno" label="VMEXT_EU_RECAP_INCLUDE_FREE" description="VMEXT_EU_RECAP_INCLUDE_FREE_DESC" >
             <option value="1">JYES</option>
             <option value="0">JNO</option>
@@ -97,11 +99,6 @@
 <!--             <option value="status">VMEXT_EU_RECAP_TAXATION_MOMENT_STATUSCHANGE</option> -->
 <!--             <option value="payment">VMEXT_EU_RECAP_TAXATION_MOMENT_PAYMENT</option> -->
             <option value="invoice">VMEXT_EU_RECAP_TAXATION_MOMENT_INVOICE</option>
-        </param>
-        <param name="export_format" type="list" default="full" label="VMEXT_EU_RECAP_EXPORT_FORMAT" description="VMEXT_EU_RECAP_EXPORT_FORMAT_DESC" >
-            <option value="full">VMEXT_EU_RECAP_EXPORT_FULL</option>
-            <option value="AT_xml">VMEXT_EU_RECAP_EXPORT_AT_XML</option>
-            <option value="DE_csv">VMEXT_EU_RECAP_EXPORT_DE_CSV</option>
         </param>
         <param name="vendor_vatid" type="text" scope="com_virtuemart" default="" label="VMEXT_EU_RECAP_VENDOR_VATID" description="VMEXT_EU_RECAP_VENDOR_VATID_DESC"/>
         <param name="taxnr" type="text" scope="com_virtuemart" default="" label="VMEXT_EU_RECAP_TAXNR" description="VMEXT_EU_RECAP_TAXNR_DESC"/>

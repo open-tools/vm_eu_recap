@@ -26,23 +26,38 @@ $myCurrencyDisplay = CurrencyDisplay::getInstance();
 
 
 ?>
+<pre><?php print_r(vRequest::getRequest()); ?></pre>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
+	<?php echo $this->addStandardHiddenToForm(); ?>
+
     <div id="header">
         <h2><?php echo vmText::sprintf('VMEXT_EU_RECAP_VIEW_TITLE_DATE', vmJsApi::date( $this->from_period, 'LC',true) , vmJsApi::date( $this->until_period, 'LC',true) ); ?></h2>
+        <p><?php echo vmText::_('VMEXT_EU_RECAP_VIEW_EXPLANATION'); ?> </p>
         <div id="filterbox">
-            <table>
-                <tr>
-                    <td align="left" width="100%">
-						<?php if ($this->frequency<12) {
-							echo vmText::_('VMEXT_EU_RECAP_LIST_MONTH') . $this->period_lists['month_list']; 
-						} ?>
-                        <?php echo vmText::_('VMEXT_EU_RECAP_LIST_YEAR') . $this->period_lists['year_list'];
+            <table width="100%">
+                <tr width="100%">
+                    <td align="left">
+						<?php 
+						echo vmText::_('VMEXT_EU_RECAP_LIST_PERIOD');
+						if ($this->frequency<12) {
+							echo $this->period_lists['month_list']; 
+						} 
+						echo $this->period_lists['year_list'];
 
                         if(VmConfig::get('multix','none')!='none'){
                             $vendorId = vRequest::getInt('virtuemart_vendor_id',1);
                             echo ShopFunctions::renderVendorList($vendorId,false);
-                        } ?>
-                        <button class="btn btn-small" onclick="this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?>
+                        } ?><br>
+                        <label><input type="checkbox" <?php if ($this->include_taxed_orders) { ?>checked <?php } ?> name="include_taxed_orders" value="true" style="    vertical-align: middle; position: relative; bottom: 1px;">&nbsp;&nbsp;&nbsp;<?php echo vmText::_('VMEXT_EU_RECAP_INCLUDE_TAXED'); ?></label>
+                        
+					</td>
+					<td align="left" width="5%">
+                        <button class="btn btn-small" name="Go" onclick="this.form.task.value=''; this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?></button>
+                    </td>
+                    <td width="30%"></td>
+					<td align="right" width>
+						<?php echo $this->export_format_list; ?>
+                        <button class="btn btn-small" name="format" value="raw" onclick="this.form.task.value='export'; this.form.submit();"><?php echo vmText::_('VMEXT_EU_RECAP_EXPORT'); ?>
                         </button>
                     </td>
                 </tr>
@@ -75,9 +90,11 @@ $myCurrencyDisplay = CurrencyDisplay::getInstance();
                     <th>
                         <?php echo $this->sort('`sum_order_total`', 'VMEXT_EU_RECAP_ORDERTOTALS') ; ?>
                     </th>
+<?php if ($this->include_taxed_orders) { ?>
                     <th>
                         <?php echo $this->sort('`sum_order_tax`', 'VMEXT_EU_RECAP_ORDERTAXES') ; ?>
                     </th>
+<?php } ?>
                 </tr>
             </thead>
             <tbody>
@@ -130,9 +147,11 @@ $myCurrencyDisplay = CurrencyDisplay::getInstance();
                     <td align="right">
 		                <?php echo $myCurrencyDisplay->priceDisplay($r['sum_order_total']); ?>
                     </td>
+<?php if ($this->include_taxed_orders) { ?>
                     <td align="right">
 		                <?php echo $myCurrencyDisplay->priceDisplay($r['sum_order_tax']); ?>
                     </td>
+<?php } ?>
                 </tr>
                 <?php
 	    	$i = 1-$i;
@@ -149,7 +168,6 @@ $myCurrencyDisplay = CurrencyDisplay::getInstance();
         </table>
     </div>
 
-	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
 
 <?php AdminUIHelper::endAdminArea(); ?>

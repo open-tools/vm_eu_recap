@@ -9,8 +9,10 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
  *
  * @package	VirtueMart
  * @subpackage Plugins
- * @author Christopher Roussel
+ * @author Reinhold Kainhofer, Open Tools
  */
+defined ('VMPATH_ADMIN') or define ('VMPATH_ADMIN', JPATH_VM_ADMINISTRATOR);
+defined ('VMPATH_PLUGINLIBS') or define ('VMPATH_PLUGINLIBS', JPATH_VM_PLUGINS);
 if (!class_exists('vmExtendedPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmextendedplugin.php');
 
 class plgVmExtendedEuRecap extends vmExtendedPlugin {
@@ -75,7 +77,7 @@ class plgVmExtendedEuRecap extends vmExtendedPlugin {
 	}
 	
 	/** 
-	 * A helper function for the plugin installer: In VM 3.0.? the onVmAdminMenuItems trigger was added, which allows to dynamically
+	 * A helper function for the plugin installer: In VM 3.0.? the onVmAdminMenuItems trigger might added, which allows to dynamically
 	 * add admin menu items to the the backend. In earlier versions, we need to hardcode the menu item to the database. This function
 	 * decides whether the database entry is needed and if so, it adds it (otherwise it removes it, just in case).
 	 */
@@ -84,7 +86,9 @@ class plgVmExtendedEuRecap extends vmExtendedPlugin {
 		$db = JFactory::getDBO();
 		$db->setQuery("SELECT `id` FROM `#__virtuemart_adminmenuentries` WHERE `view` = 'eurecap'");
 		$exists = $db->loadResult();
-		if (version_compare($vmver, '3.0.3', 'lt')) {
+// 		$need_db_entry = version_compare($vmver, '3.0.3', 'lt');
+		$need_db_entry = true;
+		if ($need_db_entry) {
 			if (!$exists) {
 				// Before VM 3.0.3 => Need database entry (in the "Orders" section):
 				$q = "INSERT INTO `#__virtuemart_adminmenuentries` (`module_id`, `name`, `link`, `depends`, `icon_class`, `ordering`, `published`, `tooltip`, `view`, `task`) VALUES

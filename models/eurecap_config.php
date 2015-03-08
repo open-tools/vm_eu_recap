@@ -63,8 +63,9 @@ class VirtuemartModelEuRecap_config extends VmModel {
 			$registry->loadString($settings_str);
 			// Take the settings and load all missing values from the defaults in the xml file:
 			$settings = $registry->toArray();
+			$form = JForm::getInstance('eurecap-vmconfig', $path, array(), false, '//vmconfig | //config[not(//vmconfig)]');
+// 			$form = vmPlugin::loadConfigForm($path, 'eurecap');
 
-			$form = vmPlugin::loadConfigForm($path, 'eurecap');
 			$form->bind(array('settings'=>$settings));
 			$fieldSets = $form->getFieldsets();
 			foreach ($fieldSets as $name => $fieldSet) {
