@@ -1,6 +1,6 @@
 BASE=eurecap
 PLUGINTYPE=vmextended
-VERSION=0.1
+VERSION=0.3
 
 PLUGINFILES=$(BASE).php $(BASE).script.php $(BASE).xml index.html 
 # $(BASE)/
@@ -21,7 +21,7 @@ $(NONSYSTRANSLATIONS): %.ini: %.sys.ini
 
 zip: $(PLUGINFILES) $(TRANSLATIONS) $(SYSTRANSLATIONS) $(NONSYSTRANSLATIONS)
 	@echo "Packing all files into distribution file $(ZIPFILE):"
-	@zip -r $(ZIPFILE) $(PLUGINFILES) $(MVCFILES) $(TRANSLATIONS) $(FIELDS) $(ELEMENTS)
+	@zip -r $(ZIPFILE) $(PLUGINFILES) $(MVCFILES) $(TRANSLATIONS) $(FIELDS) $(ELEMENTS) LICENSE.txt
 
 clean:
 	rm -f $(ZIPFILE)

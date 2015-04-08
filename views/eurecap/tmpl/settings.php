@@ -3,18 +3,16 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 
 /**
 *
-* @version $Id$
 * @package VirtueMart
 * @subpackage EU Recapitulative Statement
-* @copyright Copyright (C) 2015 Open Tools, Reinhold Kainhofer
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* @copyright Copyright (C) 2015 Open Tools, Reinhold Kainhofer.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://www.open-tools.net/
+* http://www.open-tools.net
 */
 
 AdminUIHelper::startAdminArea($this);

@@ -3,19 +3,16 @@ if( !defined( '_JEXEC' ) ) die('Restricted access');
 
 /**
 *
-* @version $Id$
 * @package VirtueMart
 * @subpackage EU Recapitulative Statement
-* Based in parts on VirtueMart's "Revenue Report"
-* @copyright Copyright (C) VirtueMart Team - All rights reserved.
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* @copyright Copyright (C) 2015 Open Tools, Reinhold Kainhofer.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://www.open-tools.net
 */
 
 if(!defined('VM_VERSION') or VM_VERSION < 3){
@@ -118,7 +115,7 @@ class VirtuemartViewEuRecap extends VmViewAdmin {
 		JToolBarHelper::custom('settings', 'options', 'options','VMEXT_EU_RECAP_SETTINGS', false);
 // 		JToolBarHelper::custom('check_eu_vatid', 'recheck', 'recheck', 'VMEXT_EU_RECAP_RECHECK_EUVATID', true);
 // 		$bar->appendButton('Link', 'export', 'VMEXT_EU_RECAP_FULLEXPORT', 'index.php?option=com_virtuemart&view=eurecap&task=export&format=raw&layout=export_full&month='.$month.'&year='.$year);
-		$bar->appendButton('Link', 'export', 'VMEXT_EU_RECAP_EXPORT_TB_' . $settings['export_format'], 'index.php?option=com_virtuemart&view=eurecap&task=export&format=raw&layout=export&month='.$month.'&year='.$year);
+// 		$bar->appendButton('Link', 'export', 'VMEXT_EU_RECAP_EXPORT_TB_' . $settings['export_format'], 'index.php?option=com_virtuemart&view=eurecap&task=export&format=raw&layout=export&month='.$month.'&year='.$year);
 
 		$user = JFactory::getUser();
 		if($user->authorise('core.admin', 'com_virtuemart') or $user->authorise('core.manager', 'com_virtuemart')){
@@ -149,7 +146,7 @@ class VirtuemartViewEuRecap extends VmViewAdmin {
 		$euIntracommunityRevenue = $model->getEuRecap();
 		$this->assignRef('report', $euIntracommunityRevenue);
 
-		$this->export_format_list = $model->renderExportFormatList($this->_path['template'], $settings['export_format']);
+		$this->export_format_list = $model->renderExportFormatList($this->_path['template'], isset($settings['export_format'])?$settings['export_format']:"full");
 // 		$this->assignRef('export_format', $settings['export_format']);
 
 		$pagination = $model->getPagination();

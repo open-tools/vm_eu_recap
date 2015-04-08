@@ -1,26 +1,19 @@
 <?php
-if (!defined ('_JEXEC')) {
-	die('Direct Access to ' . basename (__FILE__) . ' is not allowed.');
-}
+if (!defined ('_JEXEC')) die('Direct Access is not allowed.');
 
 /**
- *
- * EU Recapitulative Statement Model
- *
- * @author Reinhold Kainhofer
- * @version $Id$
- * @package VirtueMart
- * @subpackage EU Recapitulative Statement
- * @copyright Copyright (C) 2011 - 2014VirtueMart Team - All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * VirtueMart is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
- *
- * http://www.open-tools.net
- */
+*
+* @package VirtueMart
+* @subpackage EU Recapitulative Statement
+* @copyright Copyright (C) 2015 Open Tools, Reinhold Kainhofer.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+*
+* http://www.open-tools.net
+*/
 
 if (!class_exists ('VmModel')) {
 	require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmmodel.php');
@@ -74,7 +67,7 @@ class VirtuemartModelEuRecap extends VmModel {
 		$this->setFrequency($frequency);
 
 		$this->from = mktime(0,0,0, $month, 1, $year);
-		$this->until = strtotime('+'.$this->frequency.' months -1 day', $this->from);
+		$this->until = strtotime('+'.$this->frequency.' months -1 second', $this->from);
 
 		$this->from_date = date ('Y-m-d', $this->from);
 		$this->until_date = date ('Y-m-d', $this->until);
@@ -197,6 +190,7 @@ class VirtuemartModelEuRecap extends VmModel {
 		$whereString = 'WHERE ' . join(' AND ', $where);
 		$groupBy = "GROUP BY `vatid`";
 		$orderBy = $this->_getOrdering ();
+vmDebug("SQL: SELECT ".$selectString.$joinedTables.$whereString.$groupBy.$orderBy);
 
 		return $this->exeSortSearchListQuery (1, $selectString, $joinedTables, $whereString, $groupBy, $orderBy);
 	}
@@ -222,9 +216,9 @@ class VirtuemartModelEuRecap extends VmModel {
 
 			case 3: // quartely
 				$vals[1] = vmText::_('First Quarter');
-				$vals[3] = vmText::_('Second Quarter');
-				$vals[6] = vmText::_('Third Quarter');
-				$vals[9] = vmText::_('Forth Quarter');
+				$vals[4] = vmText::_('Second Quarter');
+				$vals[7] = vmText::_('Third Quarter');
+				$vals[10] = vmText::_('Forth Quarter');
 				break;
 
 			case 12: // yearly

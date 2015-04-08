@@ -2,15 +2,19 @@
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 
 /**
- * Abstract class for extended plugins
- * This class provides some standard methods that can implemented to add features into the VM core
- * Be sure to include this line in the plugin file:
- * require(VMPATH_ADMIN.DS.'helpers'.DS.'vmextendedplugin.php');
- *
- * @package	VirtueMart
- * @subpackage Plugins
- * @author Reinhold Kainhofer, Open Tools
- */
+*
+* @package VirtueMart
+* @subpackage EU Recapitulative Statement
+* @copyright Copyright (C) 2015 Open Tools, Reinhold Kainhofer.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+*
+* http://www.open-tools.net
+*/
+
 defined ('VMPATH_ADMIN') or define ('VMPATH_ADMIN', JPATH_VM_ADMINISTRATOR);
 defined ('VMPATH_PLUGINLIBS') or define ('VMPATH_PLUGINLIBS', JPATH_VM_PLUGINS);
 if (!class_exists('vmExtendedPlugin')) require(VMPATH_PLUGINLIBS . DS . 'vmextendedplugin.php');
@@ -40,7 +44,7 @@ class plgVmExtendedEuRecap extends vmExtendedPlugin {
 	 * @return True if this loads a file (null otherwise)
 	 */
 	public function onVmAdminController ($controller) {
-		if ($controller = 'eurecap') {
+		if ($controller == 'eurecap') {
 			VmModel::addIncludePath($this->_path . DS . 'models');
 
 			// TODO: Make sure the model exists. We probably should find a better way to load this automatically! 

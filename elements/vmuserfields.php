@@ -7,7 +7,7 @@ defined('_JEXEC') or die();
  * @author Reinhold Kainhofer, Open Tools
  * @link http://www.open-tools.net
  * @copyright Copyright (c) 2015 Reinhold Kainhofer. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
