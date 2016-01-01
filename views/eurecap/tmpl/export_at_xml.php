@@ -48,7 +48,7 @@ foreach ($this->report as $r) {
 ?>
 		<ZM>
 			<UID_MS><?php echo $vatid; ?></UID_MS>
-			<SUM_BGL type="kz"><?php echo $r['sum_order_total']; ?></SUM_BGL>
+			<SUM_BGL type="kz"><?php echo floor($r['sum_order_total']); ?></SUM_BGL>
 <?php //			<DREIECK>0</DREIECK> ?>
 			<SOLEI>1</SOLEI>
 		</ZM>

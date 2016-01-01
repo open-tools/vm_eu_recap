@@ -7,9 +7,9 @@
     <authorUrl>http://www.open-tools.net/</authorUrl>
     <copyright>Copyright (C) 2015 Reinhold Kainhofer. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPLv3</license>
-    <version>0.3</version>
-    <releaseDate>2015-04-01</releaseDate>
-    <releaseType>Initial Release</releaseType>
+    <version>0.4</version>
+    <releaseDate>2016-01-01</releaseDate>
+    <releaseType>Update</releaseType>
     <downloadUrl>http://www.open-tools.net</downloadUrl>
 
     <description>VMEXT_EU_RECAP_DESC</description>
@@ -103,5 +103,9 @@
         <param name="vendor_vatid" type="text" scope="com_virtuemart" default="" label="VMEXT_EU_RECAP_VENDOR_VATID" description="VMEXT_EU_RECAP_VENDOR_VATID_DESC"/>
         <param name="taxnr" type="text" scope="com_virtuemart" default="" label="VMEXT_EU_RECAP_TAXNR" description="VMEXT_EU_RECAP_TAXNR_DESC"/>
     </params>
+	
+	<updateservers>
+		<server type="extension" name="VM EU Recapitulative Statements Updates"><![CDATA[http://open-tools.net/UpdateServer/index.php?package=Joomla&amp;extension=EURecap]]></server>
+	</updateservers>
 
 </extension>

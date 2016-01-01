@@ -1,6 +1,6 @@
 BASE=eurecap
 PLUGINTYPE=vmextended
-VERSION=0.3
+VERSION=0.4
 
 PLUGINFILES=$(BASE).php $(BASE).script.php $(BASE).xml index.html 
 # $(BASE)/
