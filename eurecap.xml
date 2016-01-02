@@ -105,7 +105,7 @@
     </params>
 	
 	<updateservers>
-		<server type="extension" name="VM EU Recapitulative Statements Updates"><![CDATA[http://open-tools.net/UpdateServer/index.php?package=Joomla&amp;extension=EURecap]]></server>
+		<server type="extension" name="VM EU Recapitulative Statements Updates"><![CDATA[http://open-tools.net/UpdateServer/index.php?package=Joomla&amp;extension=EURecap&amp;file=extension.xml]]></server>
 	</updateservers>
 
 </extension>
