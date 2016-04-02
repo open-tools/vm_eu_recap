@@ -52,7 +52,7 @@ class plgVmExtendedEuRecap extends vmExtendedPlugin {
 			require_once($this->_path.DS.'models'.DS.'eurecap.php');
 			require_once($this->_path.DS.'models'.DS.'eurecap_config.php');
 			require_once($this->_path.DS.'controllers'.DS.'eurecap.php');
-			return true;
+			return false;
 		}
 	}
 	
