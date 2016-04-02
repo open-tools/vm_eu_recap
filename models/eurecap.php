@@ -252,7 +252,7 @@ vmDebug("SQL: SELECT ".$selectString.$joinedTables.$whereString.$groupBy.$orderB
         }
         sort($templates, SORT_STRING);
         $templates = array_unique($templates);
-        
+        $options = array();
         foreach ($templates as $tmpl) {
 			$value = substr($tmpl, 7, -4); // Cut off export_ and .php
 			$options[] = JHtml::_('select.option', vmText::_('VMEXT_EU_RECAP_EXPORT_' . strtoupper($value)), $value);

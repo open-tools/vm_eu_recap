@@ -24,7 +24,7 @@ class plgVmExtendedEuRecap extends vmExtendedPlugin {
 	public function __construct (&$subject, $config=array()) {
 		parent::__construct($subject, $config);
 		$this->_path = JPATH_PLUGINS.DS.'vmextended'.DS.$this->getName();
-		JPlugin::loadLanguage('plg_vmextended_'.$this->getName());
+		$this->loadLanguage('plg_vmextended_'.$this->getName());
 	}
 
 //     public function getVmPluginCreateTableSQL () {
@@ -45,13 +45,21 @@ class plgVmExtendedEuRecap extends vmExtendedPlugin {
 	 */
 	public function onVmAdminController ($controller) {
 		if ($controller == 'eurecap') {
-			VmModel::addIncludePath($this->_path . DS . 'models');
-
-			// TODO: Make sure the model exists. We probably should find a better way to load this automatically! 
-			//       Currently, some path config seems missing, so the model is not found by default.
-			require_once($this->_path.DS.'models'.DS.'eurecap.php');
-			require_once($this->_path.DS.'models'.DS.'eurecap_config.php');
+			VmModel::addIncludePath($this->_path . DS . 'models', 'VirtueMartModel');
+// 			require_once($this->_path.DS.'models'.DS.'eurecap.php');
+// 			require_once($this->_path.DS.'models'.DS.'eurecap_config.php');
 			require_once($this->_path.DS.'controllers'.DS.'eurecap.php');
+			
+			// In later VM versions, we can execute the controller here:
+			$_class = 'VirtueMartController'.ucfirst($controller);
+			if(!class_exists($_class)){
+				vmError('Serious Error could not find controller '.$_class,'Serious error, unable to find class');
+				$app = vFactory::getApplication();
+				$app->redirect('index.php?option=com_virtuemart');
+			}
+			$controller = new $_class();
+			$controller->execute(vRequest::getCmd('task', $controller));
+			$controller->redirect();
 			return true;
 		}
 	}

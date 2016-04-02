@@ -34,9 +34,8 @@ if(!defined('VM_VERSION') or VM_VERSION < 3){
 class VirtuemartViewEuRecap extends VmViewAdmin {
 	function __construct(){
 		parent::__construct();
-		// Add the proper view pathes...
-		$this->_addPath('template', JPATH_PLUGINS.DS . 'vmextended' . DS . 'eurecap' . DS . 'views' . DS . $this->getName() . DS  . 'tmpl');
-// 		$this->_addPath('models', JPATH_PLUGINS.DS . 'vmextended' . DS . 'eurecap' . DS . 'models' );
+		$this->_name = "eurecap";
+		$this->addLayoutPath($this->getName(), JPATH_PLUGINS.DS . 'vmextended' . DS . $this->getName() . DS . 'views' . DS . $this->getName() . DS  . 'tmpl');
 	}
 
 	/**
@@ -47,7 +46,7 @@ class VirtuemartViewEuRecap extends VmViewAdmin {
 		if (!class_exists('VmHTML'))
 			require(VMPATH_ADMIN . DS . 'helpers' . DS . 'html.php');
 
-		$model		= VmModel::getModel();
+		$model		= VmModel::getModel('eurecap');
 		$this->addStandardDefaultViewLists($model);
 
 		vRequest::setvar('task','');

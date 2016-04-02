@@ -34,7 +34,7 @@ class VirtuemartControllerEuRecap extends VmController {
 	function __construct(){
 		parent::__construct();
 		// Add the proper view pathes...
-		$this->addViewPath(JPATH_PLUGINS.DS . 'vmextended' . DS . 'eurecap' . DS . 'views');
+		$this->addViewPath(JPATH_PLUGINS.DS . 'vmextended' . DS . 'eurecap' . DS . 'views' . DS . 'eurecap');
 	}
 
 	public function cancel(){
