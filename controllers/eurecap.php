@@ -68,6 +68,7 @@ class VirtuemartControllerEuRecap extends VmController {
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView($viewName, $viewType);
+		$view->writeJs = false;
 		$view->setLayout($layout);
 
 		$this->display();
