@@ -47,7 +47,7 @@ $myCurrencyDisplay = CurrencyDisplay::getInstance();
                             $vendorId = vRequest::getInt('virtuemart_vendor_id',1);
                             echo ShopFunctions::renderVendorList($vendorId,false);
                         } ?><br>
-                        <label><input type="checkbox" <?php if ($this->include_taxed_orders) { ?>checked <?php } ?> name="include_taxed_orders" value="true" style="vertical-align: top; position: relative; bottom: 1px;">&nbsp;<?php echo vmText::_('VMEXT_EU_RECAP_INCLUDE_TAXED'); ?></label>
+                        <label><input type="checkbox" <?php if ($this->include_taxed_orders) { ?>checked <?php } ?> name="include_taxed_orders" value="true" style="vertical-align: top; position: relative; bottom: 1px;" onchange="this.form.submit();">&nbsp;<?php echo vmText::_('VMEXT_EU_RECAP_INCLUDE_TAXED'); ?></label>
                         </div>
                         <span><button class="btn btn-small" name="Go" onclick="this.form.task.value=''; this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?></button></span>
                     </td>
