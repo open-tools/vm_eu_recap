@@ -57,21 +57,28 @@ class VirtuemartControllerEuRecap extends VmController {
 		$this->display();
 	}
 
-	function export($layout='export'){
-		$viewName = $this->_cname;
-		vRequest::setVar('controller', $viewName);
-		vRequest::setVar('view', $viewName);
-		vRequest::setVar('layout', $layout);
-		vRequest::setVar('task', $layout);
-// 		vRequest::setVar('format', 'raw');
+	function display($layout='') {
+		if (vRequest::getVar('format')=='raw') {
+			// Raw forman means "Export"!!!
+			// Ideally, we would use an export task, but unfortunately
+			// we cannot both set format=raw and task=export in the export
+			// button. format=raw MUST be set, because otherwise a HTML
+			// document is initialized by default!
+			$layout = 'export';
 
-		$document = JFactory::getDocument();
-		$viewType = $document->getType();
-		$view = $this->getView($viewName, $viewType);
-		$view->writeJs = false;
-		$view->setLayout($layout);
+			$viewName = $this->_cname;
+			vRequest::setVar('controller', $viewName);
+			vRequest::setVar('view', $viewName);
+			vRequest::setVar('layout', $layout); // Set the layout to export!
 
-		$this->display();
+			$document = JFactory::getDocument();
+			$viewType = $document->getType();
+			$view = $this->getView($viewName, $viewType);
+			$view->writeJs = false;
+			$view->setLayout($layout);
+		}
+
+		return parent::display($layout);
 	}
 
 	/**

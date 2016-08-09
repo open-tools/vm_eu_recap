@@ -53,7 +53,7 @@ $myCurrencyDisplay = CurrencyDisplay::getInstance();
                     </td>
                     <td align="right" style="vertical-align: top">
 						<div style="float: right"><?php echo $this->export_format_list; ?>
-                        <button class="btn btn-small" name="format" value="raw" onclick="this.form.task.value='export'; this.form.submit();" style="vertical-align: top;"><?php echo vmText::_('VMEXT_EU_RECAP_EXPORT'); ?>
+                        <button class="btn btn-small" name="format" value="raw"  style="vertical-align: top;"><?php echo vmText::_('VMEXT_EU_RECAP_EXPORT'); ?>
                         </button></div>
                     </td>
                 </tr>
