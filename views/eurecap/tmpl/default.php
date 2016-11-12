@@ -22,6 +22,9 @@ if (!class_exists('CurrencyDisplay'))
     require(VMPATH_ADMIN . DS . 'helpers' . DS . 'currencydisplay.php');
 $myCurrencyDisplay = CurrencyDisplay::getInstance();
 
+$totalOrders = 0;
+$totalRevenue = 0;
+$totalTax = 0;
 
 ?>
 
@@ -134,6 +137,7 @@ $myCurrencyDisplay = CurrencyDisplay::getInstance();
                         $orders = array_combine($oids, $onrs);
                         $links = array();
                         foreach ($orders as $oid=>$onr) {
+							$totalOrders += 1;
                             $orderlink = JROUTE::_ ('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $oid, FALSE);
                             $links[] = JHtml::_ ('link', JRoute::_ ($orderlink, FALSE), $onr, array('title' => $onr));
                         }
@@ -141,11 +145,15 @@ $myCurrencyDisplay = CurrencyDisplay::getInstance();
                     ?>
                     </td>
                     <td align="right">
-		                <?php echo $myCurrencyDisplay->priceDisplay($r['sum_order_total']); ?>
+		                <?php 
+							$totalRevenue += $r['sum_order_total'];
+							echo $myCurrencyDisplay->priceDisplay($r['sum_order_total']); ?>
                     </td>
 <?php if ($this->include_taxed_orders) { ?>
                     <td align="right">
-		                <?php echo $myCurrencyDisplay->priceDisplay($r['sum_order_tax']); ?>
+		                <?php 
+							$totalTax += $r['sum_order_tax'];
+							echo $myCurrencyDisplay->priceDisplay($r['sum_order_tax']); ?>
                     </td>
 <?php } ?>
                 </tr>
@@ -155,6 +163,22 @@ $myCurrencyDisplay = CurrencyDisplay::getInstance();
 	    ?>
             </tbody>
             <tfoot>
+                <tr style="border-top: 2px solid;">
+                    <th align="center"></th>
+                    <th align="center" ></th>
+                    <th align="left"><?php echo vmText::_('VMEXT_EU_RECAP_SUMMARY'); ?></th>
+                    <th align="left"></th>
+                    <th align="left"><?php echo vmText::sprintf('VMEXT_EU_RECAP_ORDERCOUNT', $totalOrders); ?></th>
+                    <th align="right">
+		                <?php echo $myCurrencyDisplay->priceDisplay($totalRevenue); ?>
+                    </th>
+<?php if ($this->include_taxed_orders) { ?>
+                    <th align="right">
+		                <?php echo $myCurrencyDisplay->priceDisplay($totalTax); ?>
+                    </th>
+<?php } ?>
+                </tr>
+             
                 <tr>
                     <td colspan="10">
                         <?php if ($this->pagination) echo $this->pagination->getListFooter(); ?>
