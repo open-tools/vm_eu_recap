@@ -57,7 +57,7 @@ class VirtuemartControllerEuRecap extends VmController {
 		$this->display();
 	}
 
-	function display($layout='') {
+	function display($cachable = false, $urlparams = false) {
 		if (vRequest::getVar('format')=='raw') {
 			// Raw forman means "Export"!!!
 			// Ideally, we would use an export task, but unfortunately
@@ -78,7 +78,7 @@ class VirtuemartControllerEuRecap extends VmController {
 			$view->setLayout($layout);
 		}
 
-		return parent::display($layout);
+		return parent::display($cachable, $urlparams);
 	}
 
 	/**
